@@ -1,0 +1,41 @@
+plug:
+  base-urls:
+    music-brainz: "http://musicbrainz.org/ws/2/"
+    cover-art: "http://coverartarchive.org/release-group/"
+    wikidata: "https://www.wikidata.org/w/api.php/"
+    wikipedia: "https://en.wikipedia.org/api/rest_v1/page/summary/"
+
+#management.health:
+#  circuitbreakers.enabled: true
+#  timelimiter.enabled: true
+
+resilience4j.timelimiter:
+  instances:
+    artistDetails:
+      cancelRunningFuture: true
+      timeoutDuration: 10s
+resilience4j.circuitbreaker:
+  instances:
+    artistDetails:
+#      registerHealthIndicator: true
+      slidingWindowSize: 15
+      failureRateThreshold: 20
+      slowCallRateThreshold: 50
+      slowCallDurationThreshold: 10s
+      permittedNumberOfCallsInHalfOpenState: 2
+      waitDurationInOpenState: 1s
+      eventConsumerBufferSize: 20
+      minimumNumberOfCalls: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      recordExceptions:
+        - org.springframework.web.reactive.function.client.WebClientResponseException.ServiceUnavailable
+        - io.github.resilience4j.ratelimiter.RequestNotPermitted
+        - java.util.concurrent.TimeoutException
+resilience4j.ratelimiter:
+  instances:
+    musicBrainz:
+      limitForPeriod: &rate_limit 1
+      limitRefreshPeriod: 1s
+      timeoutDuration: 10s
+#      registerHealthIndicator: true
+
