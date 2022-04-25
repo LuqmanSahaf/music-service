@@ -33,7 +33,9 @@ public class WikiService {
             .map(response -> response.getWikiPageTitle(resourceId));
 
         return wikiPageTitleMono
-            .flatMap(this::fetchWikipediaExtract);
+            .flatMap(title -> title.isEmpty() || title.isBlank() ?
+                Mono.just(title) :
+                Mono.from(fetchWikipediaExtract(title)));
     }
 
     private String getWikidataUri(String resourceId) {

@@ -35,6 +35,5 @@ resilience4j.ratelimiter:
     musicBrainz:
       limitForPeriod: &rate_limit 1
       limitRefreshPeriod: 1s
-      timeoutDuration: 10s
-#      registerHealthIndicator: true
+      timeoutDuration: 15s
 

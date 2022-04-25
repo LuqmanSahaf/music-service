@@ -48,7 +48,7 @@ public class PlugWebClients {
         return WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
                 HttpClient.create(provider)
-                    .responseTimeout(Duration.ofSeconds(10))
+                    .responseTimeout(Duration.ofSeconds(15))
                     .followRedirect(followRedirect)
             ))
             .baseUrl(url)

@@ -2,7 +2,6 @@ package com.plugsurfing.musicservice;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import com.plugsurfing.musicservice.dto.Album;
 import com.plugsurfing.musicservice.dto.ErrorResponse;
 import com.plugsurfing.musicservice.services.CoverArtService;
 import okhttp3.mockwebserver.MockResponse;
@@ -13,15 +12,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.test.StepVerifier;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
 @AutoConfigureWebTestClient
 class MusicServiceUnitTests {
 	@Autowired WebTestClient client;
@@ -63,31 +59,4 @@ class MusicServiceUnitTests {
 			.expectBody(ErrorResponse.class)
 			.isEqualTo(new ErrorResponse(BAD_REQUEST.toString()));
 	}
-
-
-	/**
-	 * If imageUrl is not found on http://coverartarchive.org, then resume without it and return the album as is.
-	 * */
-	@Test
-	void resumeWithoutImageUrlIfNotFound() {
-		mockWebServer.enqueue(new MockResponse().setBody("{}").setResponseCode(404));
-
-		var mockCoverArtClient = WebClient.builder()
-			.baseUrl(mockWebServer.url("/").url().toString())
-			.build();
-		webClients.setCoverArtClient(mockCoverArtClient);
-
-		var coverArtFakeId = "c31a5e2b-0bf8-32e0-8aeb-ef4ba99739a2";
-
-		Album album = new Album(coverArtFakeId ,"O Mio Babino Carro", null);
-
-		var albumResult = coverArtService.fetchAlbumCoverArt(album);
-
-		StepVerifier.create(albumResult)
-			.expectNext(album)
-			.verifyComplete();
-	}
-
-
-
 }

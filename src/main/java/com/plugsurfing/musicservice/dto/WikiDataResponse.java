@@ -49,8 +49,8 @@ public class WikiDataResponse {
             if (tokens.length != 0)
                 return tokens[tokens.length - 1];
         } catch (NullPointerException e) {
-            return null;
+            return "";
         }
-        return null;
+        return "";
     }
 }

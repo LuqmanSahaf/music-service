@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+src/main/docker/music-service-0.0.1-SNAPSHOT.jar
+
 ### STS ###
 .apt_generated
 .classpath

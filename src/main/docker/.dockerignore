@@ -1,0 +1,7 @@
+configuration/
+docker-compose.yml
+*-sources.jar
+*-javadoc.jar
+*-metadata.jar
+*-docker-info.jar
+build.sh

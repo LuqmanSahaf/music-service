@@ -1,6 +1,5 @@
 package com.plugsurfing.musicservice.routes;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.badRequest;
@@ -13,7 +12,6 @@ import com.plugsurfing.musicservice.dto.ErrorResponse;
 import com.plugsurfing.musicservice.services.ArtistDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -43,9 +41,9 @@ public class MusicServiceRoutes {
             this::getArtistDetailsHandler);
     }
 
-    @NotNull
     Mono<ServerResponse> getArtistDetailsHandler(ServerRequest request) {
         var mbid = request.pathVariable("mbid");
+        log.info("Received request: GET " + request.path());
 
         if (!isValidUUID(mbid)) {
             return badRequest().body(Mono.just(new ErrorResponse("Invalid MBID")), ErrorResponse.class);
