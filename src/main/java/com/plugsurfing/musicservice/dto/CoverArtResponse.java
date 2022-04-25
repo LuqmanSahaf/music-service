@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Data
 @Getter @Setter
@@ -26,10 +28,10 @@ public class CoverArtResponse {
         private boolean front; // we will prefer front image.
     }
 
-    public Image getFrontImage() {
-        return this.images == null ? null :
-            this.images.stream()
-                .filter(Image::isFront).findFirst()
-                .orElse(this.images.stream().filter(x -> x.getUrl() != null).findFirst().orElse(null));
+    public Mono<Image> getFrontImage() {
+        return this.images == null || this.images.size() == 0 ? Mono.empty() :
+            Flux.fromIterable(this.images)
+                .takeUntil(Image::isFront)
+                .takeLast(1).single();
     }
 }

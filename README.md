@@ -108,7 +108,7 @@ OKs: 56/80
 
 ##### Rate: 10 req / sec
 
-Error Rate: 71.25%
+Error Rate: 51.25%
 
 OKs: 23/80
 

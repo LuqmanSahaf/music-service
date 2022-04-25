@@ -27,10 +27,10 @@ public class CoverArtService {
             .bodyToMono(CoverArtResponse.class);
 
         return imagesMono
-            .flatMap(image -> {
-                album.setImageUrl(image.getFrontImage().getUrl());
-                return Mono.just(album);
-            })
+            .flatMap(coverArt -> coverArt.getFrontImage().map(image -> {
+                album.setImageUrl(image.getUrl());
+                return album;
+            }))
             .onErrorResume(e -> {
                 // Don't set Image Url if it's not found.
                 if (e instanceof WebClientResponseException.NotFound || e instanceof WebClientResponseException.BadRequest)
