@@ -1,0 +1,6 @@
+version: "3"
+services:
+  music-service:
+    image: docker.io/luckysahaf/music-service:latest
+    ports:
+      - "8080:8080"
