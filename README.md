@@ -129,6 +129,10 @@ Although, I have partially configured to post health metrics for CircuitBreaker,
 are not available on the /actuator endpoint. These metrics can be used to launch more
 instances of the app inside a cluster, so the load could be divided.
 
+Another thing that I haven't implemented is caching, which would dramatically improve 
+the latency of repeating requests. I'd have done it with a distributed cache like Redis so
+the app remains scalable.
+
 
 #### Shortcuts
 I did some hard-coded configurations when creating clients in 
